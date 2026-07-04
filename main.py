@@ -1,5 +1,6 @@
 from core.jarvis import Jarvis
 from voice.listener import listen
+from voice.speaker import speak
 
 jarvis = Jarvis()
 
@@ -22,3 +23,5 @@ while True:
     reply = jarvis.process(user)
 
     print(f"\nJarvis : {reply}")
+
+    speak(reply)
