@@ -1,6 +1,7 @@
 from assistant.brain import Brain
-from assistant.planner import Planner
+from assistant.ai_planner import AIPlanner
 from core.executor import Executor
+from core.task_manager import TaskManager
 
 
 class Jarvis:
@@ -9,18 +10,23 @@ class Jarvis:
 
         self.brain = Brain()
 
-        self.planner = Planner()
+        self.planner = AIPlanner()
 
         self.executor = Executor()
+
+        self.task_manager = TaskManager()
 
     def process(self, user_input):
 
         plan = self.planner.plan(user_input)
 
         if plan["action"] == "chat":
+           return self.brain.ask(user_input)
 
-            return self.brain.ask(user_input)
+        actions = [plan]
 
-        success, message = self.executor.execute(plan)
+        results = self.task_manager.execute(
+                  self.executor,
+                  actions)
 
-        return message
+        return "\n".join(results)
