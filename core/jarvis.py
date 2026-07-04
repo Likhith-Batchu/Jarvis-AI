@@ -8,15 +8,19 @@ class Jarvis:
     def __init__(self):
 
         self.brain = Brain()
+
         self.planner = Planner()
+
         self.executor = Executor()
 
-    def process(self, message):
+    def process(self, user_input):
 
-        plan = self.planner.plan(message)
+        plan = self.planner.plan(user_input)
 
-        if plan["tool"]:
+        if plan["action"] == "chat":
 
-            return self.executor.execute(plan)
+            return self.brain.ask(user_input)
 
-        return self.brain.ask(message)
+        success, message = self.executor.execute(plan)
+
+        return message

@@ -1,19 +1,58 @@
+import sqlite3
+
+
 class Memory:
 
     def __init__(self):
-        self.messages = []
 
-    def add_user(self, message):
-        self.messages.append({
-            "role": "user",
-            "content": message
-        })
+        self.connection = sqlite3.connect("data/memory.db")
 
-    def add_assistant(self, message):
-        self.messages.append({
-            "role": "assistant",
-            "content": message
-        })
+        self.cursor = self.connection.cursor()
 
-    def get_messages(self):
-        return self.messages
+        self.create_table()
+
+    def create_table(self):
+
+        self.cursor.execute("""
+        CREATE TABLE IF NOT EXISTS memories(
+
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            key TEXT UNIQUE,
+
+            value TEXT
+
+        )
+        """)
+
+        self.connection.commit()
+
+    def remember(self, key, value):
+
+        self.cursor.execute("""
+
+        INSERT OR REPLACE INTO memories(key,value)
+
+        VALUES(?,?)
+
+        """,(key,value))
+
+        self.connection.commit()
+
+    def recall(self,key):
+
+        self.cursor.execute("""
+
+        SELECT value FROM memories
+
+        WHERE key=?
+
+        """,(key,))
+
+        result=self.cursor.fetchone()
+
+        if result:
+
+            return result[0]
+
+        return None

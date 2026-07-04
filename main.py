@@ -1,18 +1,24 @@
 from core.jarvis import Jarvis
+from voice.listener import listen
 
 jarvis = Jarvis()
 
-print("=" * 50)
-print("JARVIS")
-print("=" * 50)
+print("=" * 60)
+print("               JARVIS OS")
+print("=" * 60)
 
 while True:
 
-    user = input("You: ")
+    mode = input("\n(T)ype or (V)oice? : ").lower()
+
+    if mode == "v":
+        user = listen()
+    else:
+        user = input("You : ")
 
     if user.lower() == "exit":
         break
 
     reply = jarvis.process(user)
 
-    print("\nJarvis:", reply, "\n")
+    print(f"\nJarvis : {reply}")
