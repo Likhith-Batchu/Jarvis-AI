@@ -20,13 +20,13 @@ LEETCODE_TOPICS = {
 }
 
 
-def open_website(name):
+def open_website(website):
 
-    name = name.lower()
+    website = website.lower()
 
-    if name in WEBSITES:
-        webbrowser.open(WEBSITES[name])
-        return True, f"Opening {name}."
+    if website in WEBSITES:
+        webbrowser.open(WEBSITES[website])
+        return True, f"Opening {website}."
 
     return False, "Unknown website."
 

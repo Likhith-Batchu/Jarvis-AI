@@ -1,62 +1,35 @@
 from core.tool_registry import TOOLS
+from skills.manager import SkillManager
 
 
 class Executor:
+
+    def __init__(self):
+
+        self.skill_manager = SkillManager()
 
     def execute(self, plan):
 
         action = plan["action"]
 
-        # -----------------------------
-        # Open Application
-        # -----------------------------
+        # Handle AI Skills
+        if action == "skill":
 
-        if action == "open_application":
-
-            return TOOLS["open_application"](
-                plan["app"]
+            result = self.skill_manager.execute(
+                plan["skill"]
             )
 
-        # -----------------------------
-        # Open Website
-        # -----------------------------
+            return True, result
 
-        elif action == "open_website":
+        # Handle Tools
+        tool = TOOLS.get(action)
 
-            return TOOLS["open_website"](
-                plan["website"]
-            )
+        if tool is None:
+            return False, f"Unknown action: {action}"
 
-        # -----------------------------
-        # Google Search
-        # -----------------------------
+        kwargs = {}
 
-        elif action == "google_search":
+        for arg in tool.arguments:
+            kwargs[arg] = plan[arg]
 
-            return TOOLS["google_search"](
-                plan["query"]
-            )
-
-        # -----------------------------
-        # LeetCode
-        # -----------------------------
-
-        elif action == "leetcode":
-
-            return TOOLS["leetcode"](
-                plan["topic"]
-            )
-
-        # -----------------------------
-        # Workspace
-        # -----------------------------
-
-        elif action == "workspace":
-
-            if plan["workspace"] == "dsa":
-
-                TOOLS["workspace_dsa"]()
-
-                return True, "DSA Workspace Ready."
-
-        return False, "Unknown action."
+        return tool.function(**kwargs)

@@ -10,8 +10,8 @@ APPS = {
     "vscode": "code"
 }
 
-def open_application(app_name):
-    app_name = app_name.lower()
+def open_application(app):
+    app_name = app.lower()
 
     if app_name not in APPS:
         return False, f"I don't know how to open {app_name}."
