@@ -32,4 +32,16 @@ class Executor:
         for arg in tool.arguments:
             kwargs[arg] = plan[arg]
 
-        return tool.function(**kwargs)
+       
+    
+        print("========== EXECUTOR ==========")
+        print("Action:", action)
+        print("Tool:", tool.function.__name__)
+        print("Kwargs:", kwargs)
+
+        result = tool.function(**kwargs)
+
+        print("Result:", result)
+        print("==============================")
+
+        return result

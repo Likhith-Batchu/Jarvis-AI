@@ -9,6 +9,9 @@ from ui.waveform_widget import WaveformWidget
 
 from ui.theme import *
 
+from ui.chat_widget import ChatWidget
+from ui.input_widget import InputWidget
+from ui.notification_widget import NotificationWidget
 
 class MainWindow(QWidget):
 
@@ -18,7 +21,7 @@ class MainWindow(QWidget):
 
         self.setWindowTitle("JARVIS")
 
-        self.resize(320,220)
+        self.resize(420,550)
 
         self.setStyleSheet(f"""
 
@@ -35,6 +38,7 @@ class MainWindow(QWidget):
             Qt.WindowStaysOnTopHint
 
         )
+        self.notification = NotificationWidget()
 
         layout = QVBoxLayout()
 
@@ -44,10 +48,26 @@ class MainWindow(QWidget):
 
         self.wave = WaveformWidget()
 
+        self.chat = ChatWidget()
+
+        self.input_widget = InputWidget()
+
         layout.addWidget(self.title)
 
         layout.addWidget(self.status)
 
         layout.addWidget(self.wave)
+
+        layout.addWidget(self.title)
+
+        layout.addWidget(self.status)
+
+        layout.addWidget(self.wave)
+
+        layout.addWidget(self.chat)
+
+        layout.addWidget(self.input_widget)
+
+        layout.addWidget(self.notification)
 
         self.setLayout(layout)

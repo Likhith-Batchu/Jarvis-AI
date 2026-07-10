@@ -12,6 +12,7 @@ APPS = {
 
 def open_application(app):
     app_name = app.lower()
+    print("🔥 open_application() called with:", app)
 
     if app_name not in APPS:
         return False, f"I don't know how to open {app_name}."

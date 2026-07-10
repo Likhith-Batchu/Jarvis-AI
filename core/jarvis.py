@@ -18,15 +18,27 @@ class Jarvis:
 
     def process(self, user_input):
 
+        print("STEP A")
+
         plan = self.planner.plan(user_input)
 
+        print("STEP B", plan)
+
         if plan["action"] == "chat":
-           return self.brain.ask(user_input)
+
+            print("STEP C")
+
+            return self.brain.ask(user_input)
+
+        print("STEP D")
 
         actions = [plan]
 
         results = self.task_manager.execute(
-                  self.executor,
-                  actions)
+        self.executor,
+        actions
+        )
+
+        print("STEP E")
 
         return "\n".join(results)
