@@ -1,28 +1,66 @@
-from PySide6.QtWidgets import QTextEdit
-from ui.theme import *
+from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QScrollArea
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QScrollBar
+from ui.message_widget import MessageWidget
 
 
-class ChatWidget(QTextEdit):
+class ChatWidget(QWidget):
 
     def __init__(self):
 
         super().__init__()
 
-        self.setReadOnly(True)
+        self.layout = QVBoxLayout()
 
-        self.setStyleSheet(f"""
-            background:{CARD};
-            color:{TEXT};
-            border:1px solid {BORDER};
-            border-radius:12px;
-            padding:8px;
-            font-size:13px;
-        """)
+        self.layout.addStretch()
+
+        container = QWidget()
+
+        container.setLayout(self.layout)
+
+        self.scroll = QScrollArea()
+
+        self.scroll.setWidgetResizable(True)
+
+        self.scroll.setWidget(container)
+
+        root = QVBoxLayout()
+
+        root.addWidget(self.scroll)
+
+        self.setLayout(root)
 
     def add_user(self, text):
 
-        self.append(f"<b>👤 You:</b> {text}<br>")
+        self.layout.insertWidget(
+
+            self.layout.count()-1,
+
+            MessageWidget("user", text)
+
+        )
+        QTimer.singleShot(
+        0,
+        lambda: self.scroll.verticalScrollBar().setValue(
+        self.scroll.verticalScrollBar().maximum()
+         )
+        )
 
     def add_jarvis(self, text):
 
-        self.append(f"<b>🤖 Jarvis:</b> {text}<br>")
+        self.layout.insertWidget(
+
+            self.layout.count()-1,
+
+            MessageWidget("jarvis", text)
+
+        )
+
+        QTimer.singleShot(
+    0,
+    lambda: self.scroll.verticalScrollBar().setValue(
+        self.scroll.verticalScrollBar().maximum()
+    )
+)

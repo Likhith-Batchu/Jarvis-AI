@@ -9,7 +9,10 @@ from core.jarvis import Jarvis
 
 from voice.speaker import speak
 
+from controllers.voice_controller import VoiceController
 
+
+voice = VoiceController()
 jarvis = Jarvis()
 
 app = QApplication(sys.argv)
@@ -51,9 +54,22 @@ def send_message():
         ui.set_status("standby")
 
 
+def start_listening():
+
+        ui.set_status("listening")
+
+        text = voice.listen_once()
+
+        window.input_widget.input.setText(text)
+
+        ui.set_status("standby")
+
+
 window.input_widget.send.clicked.connect(send_message)
 
 window.input_widget.input.returnPressed.connect(send_message)
+
+window.input_widget.mic.clicked.connect(start_listening)
 
 window.show()
 
